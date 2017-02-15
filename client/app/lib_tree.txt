@@ -1,0 +1,5 @@
+mainApp (js/app.js)
+  - shoppingListModule (modules/shoppingList/js/shoppingListModule.js)
+    - shoppingList.controllers (modules/shoppingList/js/controllers.js)
+    - shoppingList.directives (modules/shoppingList/js/directives.js)
+

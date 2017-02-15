@@ -1,0 +1,37 @@
+2016.12.29
+- add need to buy item 
+web enter item info
+click add button
+info ajax to server
+server add info to db
+server return result to client
+client list result
+ok -> item info
+no -> error message
+
+-----
+server
+SQLService.pm	object/department
+sq_srv = new SQLService(DB_INFO)
+sq_srv.select(sql)
+sq_srv.insert(sql)
+%sql_result
+....
+
+some kinds fo log system
+...
+
+Minion.pm	object/minion
+
+Operation.pm	object/operation
+
+RestAPI		cgi/master
+api/v2/addItem
+post
+JSON
+
+return
+JSON
+
+
+
