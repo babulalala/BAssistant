@@ -1,1 +1,212 @@
-<p>From View Shopping List: {{message}}</p>
+<!-- shoppingList.html -->
+<!--
+2017.03.03
+- grid length needs to be dynamic.
+-> function to calculate the height
+-> when add/delete data calls the function
+-> then reset shoppingListGrid height
+- for shopping list we don't need pagination now (not buy too much items)
+- need to remove virtical scrollbar
+-->
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <span class="navbar-brand">Shopping List</span>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#shoppingNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- action bar -->
+    <div class="collapse navbar-collapse" id="shoppingNavbar">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">List<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a data-toggle="modal" data-target="#shoppingListModal">Edit List</a></li>
+            <li><a>Create New List</a></li>
+            <li><a>Delete List</a></li>
+            <li><a>Clone List</a></li>
+            <li><a>Split List</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">Coupon <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a data-toggle="modal" data-target="#shoppingListModal">Add Coupon</a></li>
+            <li><a data-toggle="modal" data-target="#shoppingListModal">Delete Coupon</a></li>
+          </ul>
+        </li> 
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- tabs for shopping lists -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a>{{listData.listName}}</a></li>
+  <li><a>Sample 2</a></li>
+</ul>
+
+<!-- List Setting -->
+<!-- Modal -->
+<div class="modal fade" id="shoppingListModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit List</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="listName" class="col-sm-2 control-label">List Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="List Name" ng-model="listData.listName" id="listName">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="shoppingDate" class="col-sm-2 control-label">Shopping Date</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="this should be date picker!" ng-model="listData.date" id="shoppingDate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="shoppingStore" class="col-sm-2 control-label">Store</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="Name of shopping store" ng-model="listData.store" id="shoppingStore">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="goalBudget" class="col-sm-2 control-label">Goal Budget</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="The amount of goal budget" ng-model="listData.budget" id="goalBudget">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="shoppingNote" class="col-sm-2 control-label">Note</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" placeholder="note about this shopping list" ng-model="listData.note"></textarea>
+              </div>
+            </div>
+          </form>
+        </div> <!-- end of row -->
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal" ng-click="editList()">Save</button>
+        <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+      </div>
+     </div>
+    </div>
+  </div>
+</div>
+
+<!-- coupon -->
+<!-- Add Coupon -->
+<h3>{{listData.store}} / {{listData.date}}</h3>
+<p>{{listData.note}}</p>
+<div class="panel panel-default">
+<h4>Coupons</h4>
+<div ui-grid="couponOptions" class="couponGrid" ui-grid-edit ui-grid-cellnav></div>
+</div>
+
+<!-- shopping list grid -->
+<div class="panel panel-default">
+<h4> Shopping List Items</h4>
+<div ui-grid="gridOptions" class="shoppingListGrid" ui-grid-edit ui-grid-cellnav ui-grid-selection></div>
+</div>
+
+<!-- item actions and list summary -->
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+<div class="container-fluid">
+  <div class="navbar-header">
+    <!-- <span class="navbar-brand">Shopping List</span> -->
+    <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target="#itemNavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <!-- Goal Bugdget -->
+    <span class="navbar-text">Budget: {{listData.budget}}</span>
+    <!-- Total Amount -->
+    <span class="navbar-text">Amount: {{totalAmount}}</span>
+    <!-- Real Payment -->
+    <span class="navbar-text">Real: {{totalAmount}}</span>
+    <!-- Different -->
+    <span class="navbar-text">Diff: {{difference}}</span>
+  </div>
+
+  <!-- action bar -->
+  <div class="collapse navbar-collapse" id="itemNavbar">
+    <ul class="nav navbar-nav">
+        <li><a data-toggle="modal" data-target="#addItemModal">Add Item</a></li>
+        <li><a>Disable Item</a></li>
+        <li><a>Delete Item</a></li>
+    </ul>
+  </div>
+</div>
+</nav>
+
+
+<!-- add item modal -->
+<div class="modal fade" id="addItemModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add New Item</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="addItemName" class="col-sm-2 control-label">Item Name</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="newItem.name" class="form-control" id="addItemName">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="addItemPrice" class="col-sm-2 control-label">Price</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="newItem.price" class="form-control" id="addItemPrice">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="addItemNote" class="col-sm-2 control-label">Note</label>
+                <div class="col-sm-10">
+                  <textarea ng-model="newItem.note" class="form-control"></textarea>
+                </div>
+              </div>
+            </form>
+        </div>
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal" ng-click="addItem()">Save</button>
+        <button type="button" class="btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1. form to input item details
+2. get form data
+3. how to create new data on grid?
+4. triger some culculation ($wait) -->
+<!-- save data to local storage -->
+<!-- how to delete data on grid -->
+<!-- how to disable data on grid?? -->
+<!-- add select column on grid -->
+<!-- colapse coupon grid -->
+
+
+
+

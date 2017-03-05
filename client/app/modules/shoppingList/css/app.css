@@ -1,0 +1,16 @@
+.shoppingListGrid {
+	width: 100%;
+	//cell height default 30px, head height default 30px
+	height: 330px;		//10 data
+}
+
+.couponGrid {
+	width: 100%;
+	//cell height default 30px, head height default 30px
+	height: 150px;		//10 data
+}
+
+.navbar-toggle.navbar-left {
+	float: left;
+	margin-left: 10px;
+}
